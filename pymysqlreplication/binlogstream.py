@@ -333,7 +333,10 @@ class BinLogStreamReader(object):
             prelude += struct.pack('<H', flags)
 
             prelude += struct.pack('<I', self.__server_id)
-            prelude += self.log_file.encode()
+            if isinstance(self.log_file, bytes):
+                prelude += self.log_file
+            else:
+                prelude += self.log_file.encode()
         else:
             # Format for mysql packet master_auto_position
             #
